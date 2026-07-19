@@ -1,0 +1,38 @@
+build/
+.cache/
+.DS_Store
+*.swp
+*~
+compile_commands.json
+
+# CMake
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps/
+
+# IDEs
+.idea/
+.vscode/
+*.user
+*.suo
+*.sln
+*.vcxproj
+*.filters
+
+# LaTeX
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc

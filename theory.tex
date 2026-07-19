@@ -1,0 +1,114 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, physics}
+\usepackage{geometry}
+\geometry{a4paper, margin=1.8cm}
+\usepackage{hyperref}
+
+\title{\textbf{DLVN Engine}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{1D Hamiltonian}
+Single-particle lattice Hamiltonian:
+\begin{equation}
+    \hat{H} = \sum_n \alpha_n \hat{c}_n^\dagger \hat{c}_n + \sum_{n \neq m} \beta_{nm} \hat{c}_n^\dagger \hat{c}_m
+\end{equation}
+Matrix representation in localized site basis $\{|n\rangle\}$ ($V_{L,R} = 0$):
+\begin{equation}
+    H = \begin{pmatrix}
+        H_L & V_{L,EM} & 0 \\
+        V_{EM,L} & H_{EM} & V_{EM,R} \\
+        0 & V_{R,EM} & H_R
+    \end{pmatrix}
+\end{equation}
+
+\section{Liouville-von Neumann Equation with Dissipation}
+\begin{equation}
+    \frac{d\rho}{dt} = -\frac{i}{\hbar} [H, \rho]
+\end{equation}
+Phenomenological boundary damping $-\Gamma(\rho - \rho^0)$:
+\begin{equation}
+    \frac{d}{dt} \begin{pmatrix}
+        \rho_{LL} & \rho_{L,EM} & \rho_{LR} \\
+        \rho_{EM,L} & \rho_{EM,EM} & \rho_{EM,R} \\
+        \rho_{RL} & \rho_{R,EM} & \rho_{RR}
+    \end{pmatrix} = -\frac{i}{\hbar} [H, \rho] - \Gamma \begin{pmatrix}
+        \rho_{LL} - \rho^0_L & \frac{1}{2}\rho_{L,EM} & \rho_{LR} \\
+        \frac{1}{2}\rho_{EM,L} & 0 & \frac{1}{2}\rho_{EM,R} \\
+        \rho_{RL} & \frac{1}{2}\rho_{R,EM} & \rho_{RR} - \rho^0_R
+    \end{pmatrix}
+\end{equation}
+
+\section{Hamiltonian Diagonalization}
+Unitary block diagonalization $H_\alpha U_\alpha = U_\alpha \tilde{H}_\alpha$ ($\alpha \in \{L, EM, R\}$):
+\begin{equation}
+    U = U_L \oplus U_{EM} \oplus U_R, \quad \tilde{H} = U^\dagger H U, \quad \tilde{\rho} = U^\dagger \rho U
+\end{equation}
+Transformed Hamiltonian block structure:
+\begin{equation}
+    \tilde{H} = \begin{pmatrix}
+        \tilde{H}_L & \tilde{V}_{L,EM} & 0 \\
+        \tilde{V}_{EM,L} & \tilde{H}_{EM} & \tilde{V}_{EM,R} \\
+        0 & \tilde{V}_{R,EM} & \tilde{H}_R
+    \end{pmatrix}
+\end{equation}
+Commutator diagonal matrix element evaluation: $[\tilde{H}, \tilde{\rho}]_{ij} = (E_i - E_j)\tilde{\rho}_{ij} = \Omega_{ij} \tilde{\rho}_{ij}$.
+
+\section{Equation of Motion}
+\begin{equation}
+    \tilde{\rho}^0_{\alpha}(E_k) = \frac{1}{e^{(E_k - \mu_{\alpha})/k_B T_{\alpha}} + 1}, \quad \mu_{L} = E_F + \frac{eV_{\text{bias}}}{2}, \quad \mu_{R} = E_F - \frac{eV_{\text{bias}}}{2}
+\end{equation}
+Driven Liouville-von Neumann (DLVN) EOM in state representation:
+\begin{equation}
+    \frac{d\tilde{\rho}}{dt} = -\frac{i}{\hbar}[\tilde{H}, \tilde{\rho}] - \Gamma \begin{pmatrix}
+        \tilde{\rho}_{LL} - \tilde{\rho}^0_L & \frac{1}{2}\tilde{\rho}_{L,EM} & \tilde{\rho}_{LR} \\
+        \frac{1}{2}\tilde{\rho}_{EM,L} & 0 & \frac{1}{2}\tilde{\rho}_{EM,R} \\
+        \tilde{\rho}_{RL} & \frac{1}{2}\tilde{\rho}_{R,EM} & \tilde{\rho}_{RR} - \tilde{\rho}^0_R
+    \end{pmatrix}
+\end{equation}
+
+\section{4th-Order Runge-Kutta Integration}
+Time propagation $\tilde{\rho}(t + \Delta t) = \tilde{\rho}(t) + \frac{\Delta t}{6}(k_1 + 2k_2 + 2k_3 + k_4)$ with pre-allocated slopes:
+\begin{align}
+    k_1 &= f(t, \tilde{\rho}(t)), \quad & k_2 &= f\left(t + \frac{\Delta t}{2}, \tilde{\rho}(t) + \frac{\Delta t}{2} k_1\right) \\
+    k_3 &= f\left(t + \frac{\Delta t}{2}, \tilde{\rho}(t) + \frac{\Delta t}{2} k_2\right), \quad & k_4 &= f(t + \Delta t, \tilde{\rho}(t) + \Delta t k_3)
+\end{align}
+
+\section{Current Observable}
+Exact $EM$-block back-transformation ($\mathcal{O}(N_{EM}^2)$ zero-leakage cost):
+\begin{equation}
+    \rho_{EM, EM} = U_{EM}\, \tilde{\rho}_{EM, EM}\, U_{EM}^\dagger
+\end{equation}
+Single-bond electrical current ($2\times$ spin degeneracy factor):
+\begin{equation}
+    I_{n, n+1}(t) = \frac{4 e^2}{\hbar} \beta_{n, n+1}^{\text{eV}} \operatorname{Im}[\rho_{n, n+1}(t)]
+\end{equation}
+
+\section{4-Terminal 2D Generalization}
+Multi-terminal block Hamiltonian ($\mathcal{P} = \{L, R, U, D\}$):
+\begin{equation}
+    H = \begin{pmatrix}
+        H_{EM} & V_{EM,L} & V_{EM,R} & V_{EM,U} & V_{EM,D} \\
+        V_{L,EM} & H_L & 0 & 0 & 0 \\
+        V_{R,EM} & 0 & H_R & 0 & 0 \\
+        V_{U,EM} & 0 & 0 & H_U & 0 \\
+        V_{D,EM} & 0 & 0 & 0 & H_D
+    \end{pmatrix}
+\end{equation}
+Multi-lead dissipator $\mathcal{D}[\tilde{\rho}]_{\alpha,\beta}$:
+\begin{equation}
+    \mathcal{D}[\tilde{\rho}]_{\alpha,\beta} = \begin{cases}
+        -\Gamma (\tilde{\rho}_{\alpha,\alpha} - \tilde{\rho}^0_\alpha) & \alpha = \beta \in \mathcal{P} \\
+        -\frac{1}{2}\Gamma \tilde{\rho}_{\alpha,EM} & \alpha \in \mathcal{P}, \beta = EM \\
+        -\Gamma \tilde{\rho}_{\alpha,\beta} & \alpha \neq \beta \in \mathcal{P} \\
+        0 & \alpha = \beta = EM
+    \end{cases}
+\end{equation}
+2D Molecular Grid Hamiltonian ($N_{Mx} \times N_{My}$ lattice) with 1-to-1 edge coupling:
+\begin{equation}
+    H_{M} = \alpha_M \sum_{i_x, i_y} |i_x, i_y\rangle\langle i_x, i_y| + \beta_M \sum_{\langle (i_x,i_y), (j_x,j_y) \rangle} |i_x, i_y\rangle\langle j_x, j_y|
+\end{equation}
+\end{document}
