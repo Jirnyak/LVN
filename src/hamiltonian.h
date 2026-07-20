@@ -4,43 +4,45 @@
 #include <string>
 
 struct TBModelParameters {
-    // Left / Right leads (default: enabled)
+    // Molecule grid dimensions
+    int N_Mx{6};  // Molecule grid width  (N_My=1 -> 1D chain)
+    int N_My{1};  // Molecule grid height
+    double alpha_M{0.0};
+    double beta_M{-0.2};
+
+    // Left Lead (L) & Buffer (ML)
     bool has_L{true};
+    int N_L{300};
+    int N_ML{50};
+    double alpha_L{0.0};
+    double beta_L{-0.2};
+    double beta_LM{-0.2};
+
+    // Right Lead (R) & Buffer (MR)
     bool has_R{true};
+    int N_R{300};
+    int N_MR{50};
+    double alpha_R{0.0};
+    double beta_R{-0.2};
+    double beta_MR{-0.2};
 
-    int N_L;
-    int N_R;
-    int N_ML;
-    int N_MR;
-    int N_Mx;  // Molecule grid width  (N_My=1 → 1D chain = paper default)
-    int N_My;  // Molecule grid height
-
-    // Optional Up / Down branches
+    // Upper Lead (U) & Buffer (MU)
     bool has_U{false};
-    int N_U;
-    int N_MU;
-    double alpha_U;
-    double beta_U;
-    double beta_UM;
+    int N_U{300};
+    int N_MU{50};
+    double alpha_U{0.0};
+    double beta_U{-0.2};
+    double beta_UM{-0.2};
 
+    // Down Lead (D) & Buffer (MD)
     bool has_D{false};
-    int N_D;
-    int N_MD;
-    double alpha_D;
-    double beta_D;
-    double beta_DM;
+    int N_D{300};
+    int N_MD{50};
+    double alpha_D{0.0};
+    double beta_D{-0.2};
+    double beta_DM{-0.2};
 
-    double alpha_L;
-    double alpha_M;
-    double alpha_R;
-
-    double beta_L;
-    double beta_M;
-    double beta_R;
-    double beta_LM;
-    double beta_MR;
-
-    // Chemical potentials
+    // Chemical potentials / Bias (eV)
     double bias_L{0.15};
     double bias_R{-0.15};
     double bias_U{0.0};
