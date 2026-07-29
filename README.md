@@ -1,5 +1,8 @@
 <div align="center">
 
+![LVN Banner](https://raw.githubusercontent.com/marko1olo/gigahrush/main/docs/banner_lvn.jpg)
+
+
 # LVN — Quantum Electron Transport Solver (NEGF Engine)
 
 [![Physics](https://img.shields.io/badge/Domain-Quantum%20Transport-7928ca?style=for-the-badge)][][![Math](https://img.shields.io/badge/Method-NEGF%20Solver-blue?style=for-the-badge)]()
