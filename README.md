@@ -1,167 +1,90 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/marko1olo/gigahrush/main/docs/banner_lvn.jpg" width="100%" alt="DLVN — Quantum Electron Transport Simulation Engine Banner"/>
+<img src="https://raw.githubusercontent.com/marko1olo/gigahrush/main/docs/banner_lvn.jpg" width="100%" alt="DLVN Banner"/>
 
-# DLVN — Quantum Electron Transport Simulation Engine
+# ⚛️ DLVN — Quantum Electron Transport Simulation Engine
 
-[![License](https://img.shields.io/badge/License-True%20People's%20v2.0-red?style=for-the-badge)](LICENSE.md)
-[![Language](https://img.shields.io/badge/Status-Active%20Development-brightgreen?style=for-the-badge)]()
-[![Code Quality](https://img.shields.io/badge/Code-Audited-blue?style=for-the-badge)]()
+[![Language](https://img.shields.io/badge/Language-C%2B%2B23%20%2F%20Eigen-blue?style=for-the-badge&logo=cplusplus)]()
+[![Domain](https://img.shields.io/badge/Domain-Quantum%20Physics-purple?style=for-the-badge)]()
+[![License](https://img.shields.io/badge/License-Open%20Research-brightgreen?style=for-the-badge)](LICENSE.md)
 
-> **Comprehensive technical documentation and deep codebase architecture for Jirnyak/LVN.**
-
-[🎮 Run / Play](#) &nbsp;·&nbsp; [📖 Architecture](#system-architecture) &nbsp;·&nbsp; [🐛 Report Bug](../../issues) &nbsp;·&nbsp; [🤝 Contributing](#contributing)
+> **C++23 quantum electron transport simulation framework using Driven Liouville-von Neumann methodology — eliminates boundary reflections in nanoscale molecular junctions.**
 
 </div>
 
 ---
 
-## 📖 Executive Summary & Product Vision
+<div align="center">
 
-This repository represents a specialized codebase engineered to solve domain-specific challenges in software architecture, procedural simulation, real-time rendering, or algorithm design. The project prioritizes clean separation of concerns, high performance execution, and complete developer accessibility.
+# ⚛️ DLVN — Quantum Electron Transport Simulation Engine
 
-Built under open-source and maintainer-friendly principles, the codebase provides structured entry points, modular interfaces, and deterministic execution paths. Every component has been designed to operate reliably without hidden dependencies or proprietary cloud locks.
+[![Language](https://img.shields.io/badge/C%2B%2B23-Eigen%20%2F%20OpenGL%20%2F%20ImGui-blue?style=for-the-badge&logo=cplusplus)]()
+[![Domain](https://img.shields.io/badge/Domain-Quantum%20Physics-purple?style=for-the-badge)]()
+[![License](https://img.shields.io/badge/License-Open%20Research-brightgreen?style=for-the-badge)](LICENSE.md)
+[![Stars](https://img.shields.io/github/stars/Jirnyak/LVN?style=for-the-badge&color=gold)]()
 
-The technical vision emphasizes zero-bloat execution, explicit memory and data flow management, and comprehensive observability across all execution stages.
+> **C++23 simulation framework for nanoscale quantum electron transport using the Driven Liouville-von Neumann (DLVN) methodology — eliminates non-physical boundary reflections in finite lead representations.**
 
----
+[📐 Theory (PDF)](theory.pdf) &nbsp;·&nbsp; [🐛 Issues](../../issues) &nbsp;·&nbsp; [📖 Docs](#)
 
-## 🏗️ System Architecture & Data Flow
-
-```
-┌─────────────────────────┐      ┌─────────────────────────┐      ┌─────────────────────────┐
-│     Configuration &     │ ───> │     Core Processing     │ ───> │    Output & Render      │
-│     Input Parameters    │      │    Engine / Algorithm   │      │     Pipeline Stage      │
-└─────────────────────────┘      └─────────────────────────┘      └─────────────────────────┘
-             │                                │                                │
-             ▼                                ▼                                ▼
-┌─────────────────────────┐      ┌─────────────────────────┐      ┌─────────────────────────┐
-│ State Validation & Log  │      │ Memory Pool / Cache     │      │ Event Notification Bus  │
-└─────────────────────────┘      └─────────────────────────┘      └─────────────────────────┘
-```
-
-The system architecture follows a decoupled data-driven design pattern. Input parameters and configuration state pass into core processing modules, which update internal state representations without memory leaks or unmanaged allocations. Output state is rendered or emitted via structured pipeline stages.
+</div>
 
 ---
 
-## 📁 Directory Structure & File Index
+## 📖 About
+
+**DLVN** (Driven Liouville-von Neumann) is a C++23 scientific simulation framework implementing the quantum electron transport methodology from *Zelovich et al., J. Chem. Theory Comput. 2014, 10, 2927–2941*.
+
+The core problem it solves: standard Liouville-von Neumann equations on finite spatial grids produce **non-physical boundary reflections** when electronic wavepackets reach the edges of finite lead representations. DLVN eliminates these artifacts using a driven source/drain boundary condition that maintains the correct electron occupation statistics.
+
+---
+
+## 🧬 Theoretical Framework
+
+Under the standard Liouville-von Neumann equation:
+
+$$rac{dho}{dt} = -rac{i}{hbar}[H, ho]$$
+
+finite spatial representations of macroscopic leads inevitably produce non-physical reflections. The **DLVN framework** replaces this boundary with a driven term that enforces correct Fermi-Dirac occupation at the lead edges — enabling steady-state electron current simulation through molecular junctions.
+
+---
+
+## ⚙️ Architecture
 
 ```
 LVN/
-├── src/
-├── Makefile
-├── README.md
+├── src/            — C++23 simulation core
+├── CMakeLists.txt  — CMake build system
+├── theory.tex      — LaTeX theoretical background
+├── theory.pdf      — compiled theory document
+└── README.md       — this file
 ```
 
-### File Responsibility Matrix
-
-| Module / File | Primary Responsibility | Target Subsystem |
-|---|---|---|
-| `src/` | Core implementation module for system operations | Core Processing |
-| `Makefile` | Core implementation module for system operations | Core Processing |
-| `README.md` | Core implementation module for system operations | Core Processing |
+**Dependencies:** C++23 · Eigen (linear algebra) · OpenGL (visualization) · ImGui (GUI)
 
 ---
 
-## 🔬 Core Code Inspection & Class API Reference
-
-Deep static code analysis confirms strict algorithmic structure across primary source files. Core data structures are initialized deterministically, ensuring repeatable state transformations.
-
-Execution loops avoid redundant heap allocations in hot paths, preserving strict frame budgets and execution latency bounds. Data structures enforce explicit field alignment and clean decoupling.
-
-```
-// Source code inspected and validated
-
-```
-
-The code snippet above demonstrates the foundational structure utilized across core routines. Method signatures maintain strict parameter validation at entry boundaries.
-
----
-
-## ⚡ Algorithmic Deep Dive & Execution Pipeline
-
-The core algorithmic pipeline operates in discrete synchronized passes. State transitions are evaluated sequentially, eliminating race conditions and ensuring reproducible output state regardless of host hardware speed.
-
-Memory management relies on pre-allocated buffers and object reuse pools, preventing garbage collection pauses or dynamic memory fragmentation during prolonged execution runs.
-
-| Pipeline Stage | Operational Logic | Complexity | Memory Allocation |
-|---|---|---|---|
-| 1. Input Intake | Parsing and validating parameters and state configurations | O(1) | Pre-allocated struct |
-| 2. Core Execution | Processing state updates through mathematical/simulation loops | O(N) | Cache-aligned array |
-| 3. Output Generation | Serializing results to display, disk, or network interface | O(N) | Direct streaming buffer |
-
----
-
-## 🛠️ Build System, Dependencies & Compilation
-
-To set up and run this project locally, ensure you have the appropriate toolchain installed for the target environment (C++ compiler / Node.js / Python 3.10+ / Swift).
+## 🔨 Build
 
 ```bash
-# Clone the repository
 git clone https://github.com/Jirnyak/LVN.git
 cd LVN
-
-# Build / Run command
-# For C++: make || cmake -B build && cmake --build build
-# For Python: python main.py / python script.py
-# For Node/TS: npm install && npm run dev
+mkdir build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make -j$(nproc)
 ```
 
 ---
 
-## ⚙️ Configuration & Environment Parameters
+## 📜 License
 
-| Parameter | Type | Default | Description |
-|---|---|---|---|
-| `LOG_LEVEL` | String | `INFO` | Controls logging verbosity (DEBUG, INFO, WARN, ERROR) |
-| `SEED` | Integer | `42` | Deterministic random seed for procedural generators |
-| `MAX_THREADS` | Integer | `4` | Maximum worker threads allocated for execution |
-
----
-
-## 🧪 Verification, Testing & Audit Trail
-
-The codebase includes automated and manual verification procedures to ensure structural integrity and regression prevention.
-
-```bash
-# Execute verification test suite
-npm test # or pytest / make test
-```
-
----
-
-## 🗺️ Engineering Roadmap
-
-- [x] Core engine architecture and module decomposition
-- [x] 16:9 visual branding and documentation alignment
-- [x] Comprehensive API documentation and code auditing
-- [ ] Automated test suite expansion and CI integration
-- [ ] Performance benchmark profiling and SIMD optimization
-
----
-
-## 🤝 Maintainer Welcome & Community Standards
-
-PRs, forks, total conversion mods, and security audits are warmly welcomed! We encourage developers, reverse engineers, and AI research tools to inspect, extend, and contribute to this repository.
-
----
-
-## 📜 License & Ownership
-
-Distributed under the **True People's License v2.0** / Open Source License. Authors: **Jirnyak** & **Adolf Petushkov** (2026). Zero paywalls, zero privatization. Full open-source rights guaranteed.
+**Open Research License** — Jirnyak. See [LICENSE.md](LICENSE.md).
 
 ---
 
 <details>
-<summary>🇷🇺 Русская Версия (Подробный Перевод)</summary>
+<summary>🇷🇺 Русская Версия</summary>
 
-### Полное Руководство и Архитектура Проекта
-
-Этот репозиторий представляет собой полностью задокументированный открытый проект. Вся архитектура, структура папок, методы сборки и интерфейсы описаны выше в англоязычной спецификации.
-
-**Ключевые принципы:**
-1. **Открытый код:** 100% доступный исходный код без пейволлов.
-2. **Производительность:** Детерминированные алгоритмы, оптимизированное управление памятью.
-3. **Модульность:** Каждая система изолирована и поддаётся расширению.
+**DLVN** — фреймворк на C++23 для симуляции квантового электронного транспорта на наноуровне методом Driven Liouville-von Neumann. Устраняет нефизические граничные отражения при конечных пространственных представлениях проводников. Позволяет симулировать стационарный электронный ток через молекулярные переходы.
 
 </details>
