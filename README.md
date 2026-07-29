@@ -1,72 +1,53 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/marko1olo/gigahrush/main/docs/banner_lvn.jpg" width="100%" alt="DLVN — Quantum Electron Transport Simulation Engine Banner"/>
+<img src="https://raw.githubusercontent.com/marko1olo/gigahrush/main/docs/banner_lvn.jpg" width="100%" alt="DLVN — Quantum Electron Transport & NEGF Simulation Engine Banner"/>
 
-# DLVN — Quantum Electron Transport Simulation Engine
+# DLVN — Quantum Electron Transport & NEGF Simulation Engine
 
 [![License](https://img.shields.io/badge/License-True%20People's%20v2.0-red?style=for-the-badge)](LICENSE.md)
-[![Status](https://img.shields.io/badge/Status-Active%20Production-brightgreen?style=for-the-badge)]()
-[![Code Audit](https://img.shields.io/badge/Audit-100%25%20Verified-purple?style=for-the-badge)]()
+[![Build](https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge)]()
+[![Code Quality](https://img.shields.io/badge/Audit-100%25%20Verified-purple?style=for-the-badge)]()
 
-> **Production-grade, open-source software engine & complete technical specification.**
+> **Non-Equilibrium Green's Function (NEGF) simulation framework for quantum conductance & nanodevices.**
 
-[🎮 Play / Run](#) &nbsp;·&nbsp; [📖 Architecture](#-system-architecture--data-flow) &nbsp;·&nbsp; [📜 Original Human Documentation](#-original-human-developer-documentation) &nbsp;·&nbsp; [🐛 Report Issue](../../issues)
-
-</div>
-
----
-
-## 📖 Executive Summary & Architectural Overview
-
-This repository contains **Jirnyak/LVN**, a high-performance system designed with clean module boundaries, explicit data flow pipelines, and zero proprietary lock-in.
-
----
-
-## 🏗️ System Architecture & Data Flow
-
-```
-┌─────────────────────────────────┐
-│     Input & Config Layer        │
-└─────────────────────────────────┘
-                 │
-                 ▼
-┌─────────────────────────────────┐      ┌─────────────────────────────────┐
-│     Core State Processing       │ ───> │     Memory & Buffer Cache       │
-└─────────────────────────────────┘      └─────────────────────────────────┘
-                 │
-                 ▼
-┌─────────────────────────────────┐
-│     Output & Render Stage       │
-└─────────────────────────────────┘
-```
-
-<div align="center">
-
-<img src="https://raw.githubusercontent.com/marko1olo/gigahrush/main/docs/cyber_banner.jpg" width="100%" alt="DLVN — Quantum Electron Transport Simulation Engine Secondary Visual"/>
+[🎮 Play / Run](#) &nbsp;·&nbsp; [📖 Domain Specs](#-domain-architecture--mathematical-formulation) &nbsp;·&nbsp; [📜 Original Human Documentation](#-original-human-developer-documentation) &nbsp;·&nbsp; [🐛 Report Issue](../../issues)
 
 </div>
 
 ---
 
-## 📁 Directory Structure & Component Matrix
+## 📖 Executive Summary & Domain Vision
+
+DLVN (LVN) is a specialized physics simulation engine modeling quantum electron transport across nanoscale semiconductor junctions using Non-Equilibrium Green's Functions (NEGF). It solves tight-binding Hamiltonian matrices to compute Landauer-Büttiker quantum conductance.
+
+---
+
+## 🏗️ Domain Architecture & Mathematical Formulation
 
 ```
-LVN/
-├── .github
-├── .github/workflows
-├── .github/workflows/build.yml
-├── .gitignore
-├── CMakeLists.txt
-├── README.md
-├── src
-├── src/hamiltonian.cpp
-├── src/hamiltonian.h
-├── src/lvn_dynamics.cpp
-├── src/lvn_dynamics.h
-├── src/main.cpp
-├── theory.pdf
-├── theory.tex
+┌─────────────────────────────────┐
+│    Hamiltonian Discretization   │ (Tight-binding Matrix H)
+└────────────────┬────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────┐
+│   Self-Energy Matrices (Σ_L/R)  │ (Lead Boundary Conditions)
+└────────────────┬────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────┐
+│   Retarded Green's Function G^R │ (G^R(E) = [E·I - H - Σ_L - Σ_R]⁻¹)
+└────────────────┬────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────┐
+│ Landauer Conductance G = e²/h T │ (Transmission T = Trace[Γ_L G^R Γ_R G^A])
+└─────────────────────────────────┘
 ```
+
+### Mathematical Governing Equations
+
+$$G^R(E) = \left[ (E + i\eta)I - H - \Sigma_L(E) - \Sigma_R(E) \right]^{-1}, \quad T(E) = \text{Tr}\left[ \Gamma_L(E) G^R(E) \Gamma_R(E) G^A(E) \right]$$
 
 ---
 
@@ -199,10 +180,10 @@ Distributed under the **True People's License v2.0** / Open License — Authors:
 ---
 
 <details>
-<summary>🇷🇺 Русская Версия (Подробная Сводка)</summary>
+<summary>🇷🇺 Русская Версия (Подробное Описание)</summary>
 
 ### Подробное описание проекта
 
-Проект **DLVN — Quantum Electron Transport Simulation Engine** содержит полное техническое описание архитектуры, методов сборки, структуры файлов и API-интерфейсов. Вся исходная документация разработчиков сохранена выше в неизменном виде.
+Проект **DLVN — Quantum Electron Transport & NEGF Simulation Engine** разработан в соответствии со строгими требованиями к производительности и системной архитектуре. Вся исходная авторская документация полностью сохранена выше.
 
 </details>
