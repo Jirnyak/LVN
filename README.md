@@ -1,29 +1,36 @@
+The section below contains 100% of the original developer documentation, specifications, and devlogs created for this repository:
+
+---
+
 <div align="center">
 
 <img src="https://raw.githubusercontent.com/marko1olo/gigahrush/main/docs/banner_lvn.jpg" width="100%" alt="DLVN — Quantum Electron Transport Simulation Engine Main Banner"/>
 
-# DLVN — Quantum Electron Transport Simulation Engine
 
-[![License](https://img.shields.io/badge/License-True%20People's%20v2.0-red?style=for-the-badge)](LICENSE.md)
-[![Status](https://img.shields.io/badge/Status-Active%20Production-brightgreen?style=for-the-badge)]()
-[![Build](https://img.shields.io/badge/Build-Passing-blue?style=for-the-badge)]()
-[![Code Quality](https://img.shields.io/badge/Audit-100%25%20Verified-purple?style=for-the-badge)]()
+# ⚛️ DLVN — Quantum Electron Transport Simulation Engine
 
-> **Comprehensive technical documentation and deep codebase architecture for Jirnyak/LVN.**
+[![Language](https://img.shields.io/badge/C%2B%2B23-Eigen%20%2F%20OpenGL%20%2F%20ImGui-blue?style=for-the-badge&logo=cplusplus)]()
+[![Domain](https://img.shields.io/badge/Domain-Quantum%20Physics-purple?style=for-the-badge)]()
+[![License](https://img.shields.io/badge/License-Open%20Research-brightgreen?style=for-the-badge)](LICENSE.md)
+[![Stars](https://img.shields.io/github/stars/Jirnyak/LVN?style=for-the-badge&color=gold)]()
 
-[🎮 Run / Play](#) &nbsp;·&nbsp; [📖 Architecture](#-system-architecture--data-flow) &nbsp;·&nbsp; [🐛 Report Bug](../../issues) &nbsp;·&nbsp; [📜 Original Specs](#-original-developer-documentation)
+> **C++23 simulation framework for nanoscale quantum electron transport using the Driven Liouville-von Neumann (DLVN) methodology — eliminates non-physical boundary reflections in finite lead representations.**
+
+[📐 Theory (PDF)](theory.pdf) &nbsp;·&nbsp; [🐛 Issues](../../issues) &nbsp;·&nbsp; [📖 Docs](#)
 
 </div>
 
 ---
 
-## 📖 Executive Summary & Technical Vision
+## 📖 About
 
-This repository contains a production-grade software engine designed to address domain-specific requirements in systems engineering, procedural generation, high-performance simulation, or real-time graphics rendering. The project emphasizes explicit memory management, deterministic execution logic, and maintainer accessibility.
+**DLVN** (Driven Liouville-von Neumann) is a C++23 scientific simulation framework implementing the quantum electron transport methodology from *Zelovich et al., J. Chem. Theory Comput. 2014, 10, 2927–2941*.
 
-Built under strict open-source principles, the codebase provides structured entry points, modular interfaces, and clean separation of concerns. Every component operates reliably without proprietary cloud dependencies or hidden telemetry locks.
+The core problem it solves: standard Liouville-von Neumann equations on finite spatial grids produce **non-physical boundary reflections** when electronic wavepackets reach the edges of finite lead representations. DLVN eliminates these artifacts using a driven source/drain boundary condition that maintains the correct electron occupation statistics.
 
-The architectural vision focuses on zero-bloat execution, explicit data pipelines, low execution latency, and comprehensive auditability across all runtime stages.
+---
+
+
 
 ---
 
@@ -55,6 +62,7 @@ The system architecture follows a decoupled data-driven design pattern. Configur
 
 ---
 
+
 ## 📁 Directory Structure & Component Matrix
 
 ```
@@ -75,23 +83,7 @@ LVN/
 ├── theory.tex
 ```
 
-### Subsystem Responsibility Table
-
-| File / Path | System Role | Lifecycle Stage |
-|---|---|---|
-| `.github` | Core logic and system implementation | Active Runtime |
-| `.github/workflows` | Core logic and system implementation | Active Runtime |
-| `.github/workflows/build.yml` | Core logic and system implementation | Active Runtime |
-| `.gitignore` | Core logic and system implementation | Active Runtime |
-| `CMakeLists.txt` | Core logic and system implementation | Active Runtime |
-| `README.md` | Core logic and system implementation | Active Runtime |
-| `src` | Core logic and system implementation | Active Runtime |
-| `src/hamiltonian.cpp` | Core logic and system implementation | Active Runtime |
-| `src/hamiltonian.h` | Core logic and system implementation | Active Runtime |
-| `src/lvn_dynamics.cpp` | Core logic and system implementation | Active Runtime |
-
----
-
+#
 ## 🔬 Core Code Inspection & Method Signatures
 
 Static code audit confirms rigorous execution logic across primary source files. Data structures enforce explicit alignment, preventing memory fragmentation and unnecessary heap churn during continuous execution.
@@ -164,74 +156,6 @@ The code snippet above illustrates entry-point signatures, structural type bound
 
 ---
 
-## ⚡ Execution Pipeline & Algorithmic Complexity
-
-| Pipeline Stage | Operational Logic | Complexity | Memory Budget |
-|---|---|---|---|
-| 1. Parameter Validation | Parse configuration options and validate input constraints | O(1) | Stack allocated |
-| 2. Memory Allocation | Pre-allocate contiguous state buffers and object pools | O(N) | Contiguous heap array |
-| 3. Execution Sweep | Synchronous state evaluation and algorithmic step | O(N) | Cache-line aligned |
-| 4. Output Render/Emit | Stream results to visual display, terminal, or file storage | O(N) | Direct write buffer |
-
----
-
-## 🛠️ Build System, Dependencies & Compilation Guide
-
-To build and run this repository locally, verify that your environment satisfies system prerequisites (modern C++ compiler / Node.js 18+ / Python 3.10+ / Swift depending on project language).
-
-```bash
-# Clone repository
-git clone https://github.com/Jirnyak/LVN.git
-cd LVN
-
-# Compile / Install / Execute
-# For C++: cmake -B build && cmake --build build
-# For Python: python main.py
-# For JS/TS: npm install && npm run dev
-```
-
----
-
-## ⚙️ Configuration & Parameter Matrix
-
-| Config Parameter | Data Type | Default | Operational Impact |
-|---|---|---|---|
-| `ENVIRONMENT` | String | `production` | Execution environment mode |
-| `VERBOSITY` | String | `INFO` | Console log detail level |
-| `SEED` | Integer | `42` | Random number generator seed |
-
----
-
-## 📜 Original Developer Documentation
-
-The section below contains 100% of the original developer documentation, specifications, and devlogs created for this repository:
-
----
-
-<div align="center">
-
-# ⚛️ DLVN — Quantum Electron Transport Simulation Engine
-
-[![Language](https://img.shields.io/badge/C%2B%2B23-Eigen%20%2F%20OpenGL%20%2F%20ImGui-blue?style=for-the-badge&logo=cplusplus)]()
-[![Domain](https://img.shields.io/badge/Domain-Quantum%20Physics-purple?style=for-the-badge)]()
-[![License](https://img.shields.io/badge/License-Open%20Research-brightgreen?style=for-the-badge)](LICENSE.md)
-[![Stars](https://img.shields.io/github/stars/Jirnyak/LVN?style=for-the-badge&color=gold)]()
-
-> **C++23 simulation framework for nanoscale quantum electron transport using the Driven Liouville-von Neumann (DLVN) methodology — eliminates non-physical boundary reflections in finite lead representations.**
-
-[📐 Theory (PDF)](theory.pdf) &nbsp;·&nbsp; [🐛 Issues](../../issues) &nbsp;·&nbsp; [📖 Docs](#)
-
-</div>
-
----
-
-## 📖 About
-
-**DLVN** (Driven Liouville-von Neumann) is a C++23 scientific simulation framework implementing the quantum electron transport methodology from *Zelovich et al., J. Chem. Theory Comput. 2014, 10, 2927–2941*.
-
-The core problem it solves: standard Liouville-von Neumann equations on finite spatial grids produce **non-physical boundary reflections** when electronic wavepackets reach the edges of finite lead representations. DLVN eliminates these artifacts using a driven source/drain boundary condition that maintains the correct electron occupation statistics.
-
----
 
 ## 🧬 Theoretical Framework
 
@@ -280,27 +204,5 @@ make -j$(nproc)
 <summary>🇷🇺 Русская Версия</summary>
 
 **DLVN** — фреймворк на C++23 для симуляции квантового электронного транспорта на наноуровне методом Driven Liouville-von Neumann. Устраняет нефизические граничные отражения при конечных пространственных представлениях проводников. Позволяет симулировать стационарный электронный ток через молекулярные переходы.
-
-</details>
-
-
----
-
-## 📜 License & Maintainer Standards
-
-Distributed under the **True People's License v2.0** / Open License — Authors: **Jirnyak** & **Adolf Petushkov** (2026). Zero paywalls, zero privatization. Maintainers, contributors, and security auditors are welcome!
-
----
-
-<details>
-<summary>🇷🇺 Русская Версия (Подробная Сводка)</summary>
-
-### Подробное описание проекта
-
-Проект **DLVN — Quantum Electron Transport Simulation Engine** содержит полное техническое описание архитектуры, методов сборки, структуры файлов и API-интерфейсов. Вся исходная документация разработчиков сохранена выше в неизменном виде.
-
-- **Стек:** Проверен и выверен по исходному коду.
-- **Баннеры:** Уникальный 16:9 баннер и схемы архитектуры.
-- **Лицензия:** Открытый исходный код под Истинно Народной Лицензией v2.0.
 
 </details>
