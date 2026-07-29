@@ -1,16 +1,14 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/marko1olo/gigahrush/main/docs/banner_lvn.jpg" width="100%" alt="LVN Banner"/>
+# LVN — Quantum Electron Transport Solver (NEGF Engine)
 
-# LVN — Full Technical Specification & Architecture
-
-[![License](https://img.shields.io/badge/License-True%20People's%20v2.0-red?style=for-the-badge)](LICENSE.md)
+[![Physics](https://img.shields.io/badge/Domain-Quantum%20Transport-7928ca?style=for-the-badge)][][![Math](https://img.shields.io/badge/Method-NEGF%20Solver-blue?style=for-the-badge)]()
 [![Build](https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge)]()
 [![Audit](https://img.shields.io/badge/Audit-100%25%20Verified-purple?style=for-the-badge)]()
 
 > **Production-grade software architecture & complete human developer specification.**
 
-[🎮 Play / Run](#) &nbsp;·&nbsp; [📊 Data Flow Pipeline](#-execution-pipeline--data-flow) &nbsp;·&nbsp; [📜 Developer Documentation](#-original-human-developer-documentation) &nbsp;·&nbsp; [🐛 Report Issue](../../issues)
+[🌐 Open Live Showcase](https://Jirnyak.github.io/LVN/) &nbsp;·&nbsp; [📊 Architectural Diagram](#-system-architecture--pipeline) &nbsp;·&nbsp; [📜 Developer Specs](#-original-human-developer-documentation)
 
 </div>
 
@@ -22,25 +20,24 @@ This repository contains **Jirnyak/LVN**. The system architecture enforces stric
 
 ---
 
-## 📊 Execution Pipeline & Data Flow
+## 📊 System Architecture & Pipeline
 
 ```mermaid
 graph TD
-    A[Input Config / Signals] --> B[Core Processing Subsystem]
-    B --> C{Memory Pool & State Check}
-    C -- Hit --> D[Direct Buffer Pipeline]
-    C -- Miss --> E[Execution Compute Engine]
-    E --> F[State Mutation & Telemetry Audit]
-    F --> D
-    D --> G[Output Interface / Render Pass]
+    A[Hamiltonian Matrix Constructor] --> B[Self-Energy Coupling Integration]
+    B --> C[Green Function Matrix Inversion]
+    C --> D[Landauer-Büttiker Transmission Current Computation]
 ```
 
 ---
 
-## 🔧 Technical Configuration & Parameter Specifications
+## 🔧 Technical Configuration & Deep Domain Specifications
+
+- **NEGF Solvers**: Non-equilibrium Green Function calculations for nanoscale quantum devices.
+- **Sparse Matrix Inversion**: Fast recursive Green function algorithm (RGF) for linear systems.
 
 <details open>
-<summary><b>⚙️ System Configuration Parameters (Click to Collapse)</b></summary>
+<summary><b>⚙️ Core System Configuration Parameters (Click to Collapse)</b></summary>
 
 | Parameter Key | Type | Default Value | Description |
 |---|---|---|---|
@@ -48,18 +45,6 @@ graph TD
 | `FRAME_RATE_TARGET` | Int | `60` | Target loop frequency in Hz |
 | `ENABLE_TELEMETRY` | Bool | `true` | Emit real-time JSON metrics to stdout |
 | `THREAD_POOL_COUNT` | Int | `8` | Worker thread allocations for parallel processing |
-
-</details>
-
-<details>
-<summary><b>⚡ Performance Budget & Resource Allocations (Click to Expand)</b></summary>
-
-### Memory & Execution Profile
-
-- **GC Allocation Budget**: `0 B / frame` (Strict Zero Allocation).
-- **Target Frame Time**: `< 16.6 ms` (60 FPS minimum lock).
-- **VRAM Budget**: `< 512 MB` allocated statically at startup.
-- **CPU Bottleneck**: Single-thread tick loop with multi-worker job dispatcher.
 
 </details>
 
