@@ -3,6 +3,15 @@
 #include <vector>
 #include <string>
 
+// How rho is filled at t=0. Kept apart from the bias below: the bias is what the
+// dissipator holds the leads at for all time, this is only the starting fill.
+struct InitialCondition {
+    bool from_bias{true};   // Fill each lead at its own bias, leave the molecule empty
+    double mu{0.0};         // Common starting level (eV) when from_bias is false
+    double T{0.0};          // Starting temperature (K) when from_bias is false
+    bool connected{false};  // Fill the eigenstates of the whole H instead of block by block
+};
+
 struct TBModelParameters {
     // Molecule grid dimensions
     int N_Mx{6};  // Molecule grid width  (N_My=1 -> 1D chain)
@@ -42,11 +51,14 @@ struct TBModelParameters {
     double beta_D{-0.2};
     double beta_DM{-0.2};
 
-    // Chemical potentials / Bias (eV)
+    // Chemical potentials / Bias (eV), held by the dissipator for all time
     double bias_L{0.15};
     double bias_R{-0.15};
     double bias_U{0.0};
     double bias_D{0.0};
+
+    // Fill at t=0, independent of the bias above
+    InitialCondition init;
 };
 
 // Builds the Hamiltonian matrix in the site representation.

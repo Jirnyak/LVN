@@ -59,6 +59,7 @@ struct SimulationState {
         if (hr) lbl += " R:" + std::to_string(p.bias_R).substr(0, 5);
         if (hu) lbl += " U:" + std::to_string(p.bias_U).substr(0, 5);
         if (hd) lbl += " D:" + std::to_string(p.bias_D).substr(0, 5);
+        if (!p.init.from_bias) lbl += p.init.connected ? " [eq]" : " [blk]";
         current_run.label = lbl;
         progress = 0.0f;
     }
@@ -89,17 +90,11 @@ void run_simulation(TBModelParameters params, double gamma, double temperature, 
 
     Eigen::MatrixXd H_site = build_hamiltonian(params);
     StateRepresentation rep = compute_state_representation(H_site, params);
-    
-    int N = H_site.rows();
 
     RK4Workspace ws;
     ws.setup(rep, temperature);
     
-    Eigen::MatrixXcd rho_tilde = Eigen::MatrixXcd::Zero(N, N);
-    for (size_t i = 0; i < ws.leads.size(); ++i) {
-        const auto& lw = ws.leads[i];
-        rho_tilde.block(lw.start, lw.start, lw.size, lw.size) = lw.rho0;
-    }
+    Eigen::MatrixXcd rho_tilde = build_initial_rho(rep, H_site, params.init, ws);
 
     // dt is now passed as an argument 
     int steps = (int)(max_time_fs / dt);
@@ -114,11 +109,10 @@ void run_simulation(TBModelParameters params, double gamma, double temperature, 
     // Only need back-transform if any current channel is requested
     bool need_current = channels.L || channels.R || channels.U || channels.D;
 
+    // Sample before stepping, so the t=0 point on the plot is the initial condition itself
     for (int step = 0; step <= steps; ++step) {
-        if (!state->is_running) break; 
-        
-        rk4_step_state_rep(rho_tilde, gamma, dt, ws);
-        
+        if (!state->is_running) break;
+
         if (need_current && step % 5 == 0) {
             // Block-diagonal U → exact EM back-transform
             Eigen::MatrixXcd rho_tilde_EM = rho_tilde.block(idx_EM, idx_EM, ws.EM_size, ws.EM_size);
@@ -170,8 +164,10 @@ void run_simulation(TBModelParameters params, double gamma, double temperature, 
             }
             state->progress = (float)step / steps;
         }
+
+        rk4_step_state_rep(rho_tilde, gamma, dt, ws);
     }
-    
+
     if (state->is_running) {
         state->progress = 1.0f;
     }
@@ -325,6 +321,9 @@ int main(int argc, char** argv) {
         
         ImGui::Separator();
         ImGui::Text("Lead Configuration");
+        ImGui::TextDisabled("Boundary condition: what the leads are held at, for all time");
+        ImGui::InputDouble("Reservoir T (K)", &temperature);
+        if (temperature < 0.0) temperature = 0.0;
         if (params.has_L) {
             ImGui::Text("LEFT Lead");
             ImGui::InputInt("N_L", &params.N_L);
@@ -354,11 +353,24 @@ int main(int argc, char** argv) {
         }
         
         ImGui::Separator();
+        ImGui::Text("Initial Condition (rho at t=0)");
+        ImGui::TextDisabled("How rho is filled at t=0, and only at t=0");
+        ImGui::Checkbox("Fill from bias", &params.init.from_bias);
+        if (params.init.from_bias) {
+            ImGui::TextDisabled("Leads at their own bias and reservoir T, molecule empty");
+        } else {
+            ImGui::InputDouble("Start mu (eV)", &params.init.mu);
+            ImGui::InputDouble("Start T (K)", &params.init.T);
+            if (params.init.T < 0.0) params.init.T = 0.0;
+            ImGui::Checkbox("Connected equilibrium", &params.init.connected);
+            ImGui::TextDisabled(params.init.connected ? "Whole H filled at once, coherences included"
+                                                      : "Block by block, no lead-molecule coherence");
+        }
+
+        ImGui::Separator();
         ImGui::Text("Simulation Parameters");
         ImGui::InputDouble("Gamma (fs^-1)", &gamma);
         ImGui::InputDouble("Max Time (fs)", &max_time);
-        ImGui::InputDouble("Temperature (K)", &temperature);
-        if (temperature < 0.0) temperature = 0.0;
         ImGui::InputDouble("Time Step (dt) (fs)", &dt);
         if (dt <= 0.0) dt = 0.1;
         

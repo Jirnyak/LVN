@@ -31,9 +31,16 @@ struct RK4Workspace {
 };
 
 Eigen::MatrixXd compute_target_density_matrix_block(
-    const Eigen::VectorXd& eigenvalues, 
-    int start_idx, int size, 
+    const Eigen::VectorXd& eigenvalues,
+    int start_idx, int size,
     double mu, double T);
+
+// Builds rho(t=0) in the state representation according to the requested recipe.
+Eigen::MatrixXcd build_initial_rho(
+    const StateRepresentation& rep,
+    const Eigen::MatrixXd& H_site,
+    const InitialCondition& ic,
+    const RK4Workspace& ws);
 
 // In-place evaluation of the RHS to avoid allocations
 void dlvn_rhs_state_rep_inplace(

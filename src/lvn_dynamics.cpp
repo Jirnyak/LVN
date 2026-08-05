@@ -2,25 +2,71 @@
 #include <cmath>
 #include <iostream>
 
+// Occupation of a level at energy E: 1 below the fill level, 0 above, smeared by T.
+static double fermi(double E, double mu, double T) {
+    const double k_B = 8.617333262145e-5; // Boltzmann constant in eV/K
+    if (T < 1e-10) {
+        return (E <= mu) ? 1.0 : 0.0;
+    }
+    return 1.0 / (std::exp((E - mu) / (k_B * T)) + 1.0);
+}
+
 Eigen::MatrixXd compute_target_density_matrix_block(
-    const Eigen::VectorXd& eigenvalues, 
-    int start_idx, int size, 
-    double mu, double T) 
+    const Eigen::VectorXd& eigenvalues,
+    int start_idx, int size,
+    double mu, double T)
 {
     Eigen::MatrixXd rho0 = Eigen::MatrixXd::Zero(size, size);
-    const double k_B = 8.617333262145e-5; // Boltzmann constant in eV/K
-    
     for (int i = 0; i < size; ++i) {
-        double E = eigenvalues(start_idx + i);
-        double f = 0.0;
-        if (T < 1e-10) {
-            f = (E <= mu) ? 1.0 : 0.0;
-        } else {
-            f = 1.0 / (std::exp((E - mu) / (k_B * T)) + 1.0);
-        }
-        rho0(i, i) = f;
+        rho0(i, i) = fermi(eigenvalues(start_idx + i), mu, T);
     }
     return rho0;
+}
+
+Eigen::MatrixXcd build_initial_rho(
+    const StateRepresentation& rep,
+    const Eigen::MatrixXd& H_site,
+    const InitialCondition& ic,
+    const RK4Workspace& ws)
+{
+    const int N = rep.H_tilde.rows();
+    Eigen::MatrixXcd rho = Eigen::MatrixXcd::Zero(N, N);
+
+    // Cut wire: every lead starts at its own bias, the extended molecule starts empty.
+    if (ic.from_bias) {
+        for (size_t i = 0; i < ws.leads.size(); ++i) {
+            const auto& lw = ws.leads[i];
+            rho.block(lw.start, lw.start, lw.size, lw.size) = lw.rho0;
+        }
+        return rho;
+    }
+
+    // Connected equilibrium: rho = f(H, mu, T) over the eigenstates of the *whole*
+    // Hamiltonian, rotated back into the block-diagonal state representation. The
+    // lead-EM coherences come out on their own and 0 <= rho <= 1 holds by construction.
+    if (ic.connected) {
+        Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> solver(H_site);
+        Eigen::VectorXd occ(N);
+        for (int i = 0; i < N; ++i) {
+            occ(i) = fermi(solver.eigenvalues()(i), ic.mu, ic.T);
+        }
+        Eigen::MatrixXd W = rep.U.transpose() * solver.eigenvectors();
+        rho = (W * occ.asDiagonal() * W.transpose()).cast<std::complex<double>>();
+        return rho;
+    }
+
+    // Block equilibrium: leads and extended molecule alike filled to one common level.
+    // No empty gap in the middle, but no lead-EM coherence either.
+    rho.block(ws.EM_start, ws.EM_start, ws.EM_size, ws.EM_size) =
+        compute_target_density_matrix_block(rep.eigenvalues, ws.EM_start, ws.EM_size, ic.mu, ic.T)
+            .cast<std::complex<double>>();
+    for (size_t i = 0; i < ws.leads.size(); ++i) {
+        const auto& lw = ws.leads[i];
+        rho.block(lw.start, lw.start, lw.size, lw.size) =
+            compute_target_density_matrix_block(rep.eigenvalues, lw.start, lw.size, ic.mu, ic.T)
+                .cast<std::complex<double>>();
+    }
+    return rho;
 }
 
 void RK4Workspace::setup(const StateRepresentation& rep, double T) {
